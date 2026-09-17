@@ -1,5 +1,5 @@
 import { prisma } from '../config/prisma';
-import { Prisma } from '../generated/prisma/client';
+import { Prisma } from '@prisma/client';
 import { hashPassword, verifyPassword } from '../utils/passwordUtil';
 import { generateAccessToken } from '../utils/tokenUtil';
 import { HTTP_STATUS, RESPONSE_MESSAGES } from '../config/constants';

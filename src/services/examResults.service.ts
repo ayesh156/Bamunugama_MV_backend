@@ -1,5 +1,5 @@
 import { prisma } from '../config/prisma';
-import { Prisma } from '../generated/prisma/client';
+import { Prisma } from '@prisma/client';
 import { HTTP_STATUS, RESPONSE_MESSAGES } from '../config/constants';
 import { IExamResultInput, IExamTrend, IAppError } from '../types';
 

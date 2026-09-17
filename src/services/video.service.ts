@@ -1,5 +1,5 @@
 import { prisma } from '../config/prisma';
-import { Prisma } from '../generated/prisma/client';
+import { Prisma } from '@prisma/client';
 import { IVideoItem, IVideoInput, IAppError } from '../types';
 import { HTTP_STATUS } from '../config/constants';
 
