@@ -1,0 +1,8 @@
+◇ injected env (7) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+🔒 Trust proxy enabled (development)
+✅ MySQL database connected successfully
+🚀 Bamunugama School API running on http://localhost:5000
+📊 Environment: development
+📡 API available at http://localhost:5000/api
+📡 Status page at http://localhost:5000/api/test
+❤️  Health check at http://localhost:5000/api/health

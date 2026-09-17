@@ -1,0 +1,141 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// ============================================
+// Admin Model — Table: admins
+// ============================================
+model Admin {
+  id        String    @id @default(cuid())
+  fullName  String
+  username  String    @unique
+  email     String    @unique
+  password  String
+  phone     String?
+  role      String    @default("admin") // 'super_admin' | 'admin' | 'staff'
+  isActive  Boolean   @default(true)
+  lastLogin DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("admins")
+}
+
+// ============================================
+// ExamResult Model — Table: exam_results
+// ============================================
+model ExamResult {
+  id            String   @id @default(cuid())
+  examType      String // 'SCHOLARSHIP' | 'O/L' | 'A/L'
+  year          Int
+  totalSat      Int
+  totalPassed   Int
+  passPercentage Float
+  districtRank  String   @default("")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([examType, year])
+  @@map("exam_results")
+}
+
+// ============================================
+// Gallery Model — Table: gallery_items
+// ============================================
+model Gallery {
+  id          String   @id @default(cuid())
+  title       String
+  imageUrl    String   @db.Text
+  // NOTE: MySQL does not permit DEFAULT on TEXT columns.
+  // The service layer supplies '' as the application-level default.
+  description String   @db.Text
+  category    String   @default("General")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("gallery_items")
+}
+
+// ============================================
+// Video Model — Table: video_items
+// ============================================
+model Video {
+  id           String   @id @default(cuid())
+  title        String
+  videoUrl     String   @db.Text
+  // NOTE: MySQL does not permit DEFAULT on TEXT columns.
+  // The service layer supplies '' as the application-level default.
+  description  String   @db.Text
+  thumbnailUrl String   @db.Text
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("video_items")
+}
+
+// ============================================
+// StudentDemographic Model — Table: student_demographics
+// ============================================
+model StudentDemographic {
+  id          String   @id @default(cuid())
+  grade       String   @unique // e.g., "1", "2", "3A", "3B", "4", "5A", "5B", "6A", etc.
+  femaleCount Int      @default(0)
+  maleCount   Int      @default(0)
+  totalCount  Int      // Computed: femaleCount + maleCount
+  section     String   @default("Secondary") // "Primary" | "Secondary"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("student_demographics")
+}
+
+// ============================================
+// ContactCard Model — Table: contact_cards
+// ============================================
+model ContactCard {
+  id        String   @id @default(cuid())
+  title     String   // e.g. "SCHOOL ADDRESS", "PRINCIPAL", "IDENTITY CODES"
+  value     String   // e.g. "Bamunugama, Horapawita", "Mr. Chandika Jayawardena"
+  icon      String   @default("MapPin") // Lucide icon identifier: MapPin, GraduationCap, Shield, Calendar, Award, Phone, Mail
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("contact_cards")
+}
+
+// ============================================
+// ContactMessage Model — Table: contact_messages
+// ============================================
+model ContactMessage {
+  id        String   @id @default(cuid())
+  fullName  String
+  email     String
+  phone     String   @default("")
+  subject   String   @default("General Inquiry")
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contact_messages")
+}
+
+// ============================================
+// SchoolSetting Model — Table: school_settings
+// ============================================
+model SchoolSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique // e.g. "google_map_url", "school_hours", "footer_about_text"
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+
+  @@map("school_settings")
+}
