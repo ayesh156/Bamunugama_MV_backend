@@ -91,13 +91,13 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        connectSrc: ["'self'", `http://localhost:${PORT}`, ...allowedOrigins],
+        connectSrc: ["'self'", `http://localhost:${PORT}`, 'https://bmv.nebulainfinite.com', ...allowedOrigins],
         fontSrc: ["'self'", 'https://fonts.gstatic.com', 'https://fonts.googleapis.com'],
         styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
         imgSrc: ["'self'", 'data:', 'blob:', `http://localhost:${PORT}`],
         scriptSrc: ["'self'", "'unsafe-inline'"],
         formAction: ["'self'"],
-        frameAncestors: ["'self'", ...allowedOrigins],
+        frameAncestors: ["'self'", 'https://bmv.nebulainfinite.com', ...allowedOrigins],
       },
     },
     hsts: isProduction
@@ -110,8 +110,8 @@ app.use(
 // 5. CUSTOM ZERO-DUPLICATE CORS MIDDLEWARE
 // ============================================
 const productionAllowedOrigins = [
-  'https://bmv.ecosystemlk.app',
-  'https://api.bmv.ecosystemlk.app',
+  'https://bmv.nebulainfinite.com',
+  'https://api-bmv.nebulainfinite.com',
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://localhost:5000',
@@ -126,14 +126,14 @@ app.use(cors({
     const cleanOrigin = origin.replace(/\/+$/, '');
     const isAllowed = productionAllowedOrigins.some(item => cleanOrigin === item.replace(/\/+$/, '')) ||
                       /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(cleanOrigin) ||
-                      /\.ecosystemlk\.app$/i.test(cleanOrigin);
+                      /\.nebulainfinite\.com$/i.test(cleanOrigin);
 
     if (isAllowed) {
       return callback(null, cleanOrigin);
     }
 
     // Safe fallback: Error throw නොකර main domain echo කරයි
-    return callback(null, 'https://bmv.ecosystemlk.app');
+    return callback(null, 'https://bmv.nebulainfinite.com');
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -141,6 +141,7 @@ app.use(cors({
   exposedHeaders: ['Set-Cookie', 'X-Request-ID'],
   maxAge: 86400 // 24 hours preflight cache
 }));
+
 // ============================================
 // 6. COMPRESSION + 7. BODY PARSERS
 // ============================================
